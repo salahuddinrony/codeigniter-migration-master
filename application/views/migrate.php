@@ -85,7 +85,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <tr<?= $migration['version'] != $current_version ? '' : ' class="success"' ?>>
                         <th class="text-center"><?= isset($order) ? --$order : $order = count($migrations) ?></th>
                         <td><?= $migration['version'] ?></td>
-                        <td><?= $migration['file'] ?></td>
+                        <td><?= substr($migration['file'],11) ?></td>
                         <td>
                             <?php if($order == $current_version || $order <= $current_version){ ?>
                                 <span class="label label-success"> <i class="glyphicon glyphicon-ok"></i> Migrated</span>
