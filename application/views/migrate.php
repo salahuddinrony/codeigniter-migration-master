@@ -35,7 +35,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <div class="container">
     <h1 class="text-center">
         <i class="glyphicon glyphicon-fire"></i> CodeIgniter Migrate<br>
-        <small>An easy way to manage database migrations</small>
+        <small>Best way to manage database migrations</small>
     </h1>
 	<?php if (isset($migration_disabled)) : ?>
         <div class="alert alert-info">Migration is disabled.</div>
@@ -45,7 +45,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div id="msg-migrate">
                     <div class="msg">
                         <div class="alert alert-info">
-                            <strong>Info</strong><br> The current migration version is
+                            <strong> <i class="glyphicon glyphicon-exclamation-sign"></i> Migration Info :</strong><br> The current migration version is
                             <strong><?= $current_version ?></strong>.
                         </div>
                     </div>
@@ -55,9 +55,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="well">
                     <div class="btn-group btn-group-justified" role="group">
                         <div class="btn-group" role="group">
-                            <button class="btn btn-danger btn-migrate" data-version="0"
+                            <input type="checkbox" name="getReset" id="getReset" value="resetTrue" /> Reset Migrations ?
+                            <button id="resetMigrate" class="btn btn-danger btn-migrate" data-version="0"
                                     autocomplete="off">
-                                Reset Migrations
+                                    <i class="glyphicon glyphicon-refresh"></i> Reset Migrations
                             </button>
                         </div>
                     </div>
@@ -70,6 +71,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <th class="text-center">Order</th>
                 <th>Version</th>
                 <th>File</th>
+                <th>Status</th>
                 <th class="text-center">Action</th>
             </tr>
             </thead>
@@ -85,12 +87,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         <td><?= $migration['version'] ?></td>
                         <td><?= $migration['file'] ?></td>
                         <td>
-							<?php if($s == 1 && $current_version == 0){ ?>
-                            <button data-version="<?= $migration['version'] ?>"
+                            <?php if($order == $current_version || $order <= $current_version){ ?>
+                                <span class="label label-success"> <i class="glyphicon glyphicon-ok"></i> Migrated</span>
+                            <?php }else{echo '<span class="label label-danger"> <i class="glyphicon glyphicon-remove"></i> Not Yet Migrated</span>'; } ?>
+                        </td>
+                        <td>
+                            <?php if($order == $current_version || $order <= $current_version){echo ' <i class="glyphicon glyphicon-check"></i> Done'; }else if($order == $current_version+1){ ?>
+							    <button data-version="<?= $migration['version'] ?>"
                                     class="btn btn-sm btn-primary btn-migrate" autocomplete="off">
-                                Run Migrate
-                            </button>
-							<?php }else{echo '---'; } ?>
+                                    <i class="glyphicon glyphicon-play"></i> Run Migrate
+                                </button>
+                            <?php }else{echo '<b class="text-danger"> <i class="glyphicon glyphicon-dashboard"></i> Waiting</b>'; } ?>
                         </td>
                     </tr>
 				<?php endforeach ?>
@@ -104,7 +111,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <script>
     $(document).ready(function () {
         var btn_migrate = $('.btn-migrate');
-        btn_migrate.prepend('<i class="glyphicon glyphicon-refresh"></i> ');
+        //btn_migrate.prepend('<i class="glyphicon glyphicon-play"></i> ');
         btn_migrate.click(function () {
             var btn = $(this);
             btn.button('loading');
@@ -136,7 +143,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
             });
             return false;
         });
+
+        // Migration Reset Button Hide & Show
+        $('#resetMigrate').hide();
+        $('input[type="checkbox"]').click(function(){
+            if($(this).is(':checked')){
+                $('#resetMigrate').show();
+            }else if($(this).is(':not(:checked)')){
+                $('#resetMigrate').hide();
+            }
+        });
+
     });
+
+    
 
     function msg(parent, type, r) {
         var h = '';

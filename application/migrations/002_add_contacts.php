@@ -6,7 +6,7 @@ defined ( "BASEPATH" ) or exit ( "No direct script access allowed" );
  * @author Birathiban
  *        
  */
-class Migration_add_contact extends CI_Migration {
+class Migration_add_contacts extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field ( array (
 				'id' => array (
@@ -72,13 +72,13 @@ class Migration_add_contact extends CI_Migration {
 		) );
 		
 		$this->dbforge->add_key ( 'id', TRUE );
-		$this->dbforge->create_table ( 'contact' );
-		$this->db->query ( "ALTER TABLE contact ENGINE = InnoDB" );
+		$this->dbforge->create_table ( 'contacts' );
+		$this->db->query ( "ALTER TABLE contacts ENGINE = InnoDB" );
 		
 		/* ALTERING THE CREATED TABLE AND ADDING FOREIGN KEYS */
-		$this->db->query ( "ALTER TABLE contact ADD FOREIGN KEY contact(user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE" );
+		$this->db->query ( "ALTER TABLE contacts ADD FOREIGN KEY contacts(user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE" );
 	}
 	public function down() {
-		$this->dbforge->drop_table ( 'contact' );
+		$this->dbforge->drop_table ( 'contacts' );
 	}
 }
