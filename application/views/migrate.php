@@ -33,10 +33,30 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center">
-        <i class="glyphicon glyphicon-fire"></i> CodeIgniter Migrate<br>
-        <small>Best way to manage database migrations</small>
-    </h1>
+    
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="text-center">
+                <i class="glyphicon glyphicon-fire"></i> Database Migration<br>
+                <small>Best way to manage database tables</small>
+            </h1>
+        </div>
+        <div class="col-md-3">
+            <h4 class="text-center0">
+                <i class="glyphicon glyphicon-user"></i> <?php echo $this->session->userdata('name'); ?><br>
+                <small></small>
+            </h4>
+            <a href="<?php echo base_url('dashboard'); ?>">
+                <i class="glyphicon glyphicon-th"></i> <span>Dashboard</span>
+            </a>
+            &nbsp;|&nbsp; 
+            <a title="Logout" href="<?php echo base_url('logout'); ?>">
+                <i class="glyphicon glyphicon-off"></i> <span class="text">Logout</span>
+            </a>
+            <h2 class="text-center0"><?php echo $companyname; ?></h2>
+        </div>
+    </row>
+
 	<?php if (isset($migration_disabled)) : ?>
         <div class="alert alert-info">Migration is disabled.</div>
 	<?php else : ?>
@@ -135,6 +155,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     if (r.type === 'success') {
                         $('#migrations').children('tr').removeClass('success');
                         btn.parent().parent().addClass('success');
+                        location.reload(true);
                     }
                     btn.button('reset');
                 }, 'json').fail(function () {
